@@ -1,0 +1,10 @@
+#bin/bash
+
+if ! type kubectl > /dev/null 2>&1; then
+    echo "kubectl command not found"
+    exit 1
+fi
+
+kubectl config set-context $(kubectl config current-context) \
+    --namespace=$(kubectl get namespaces | awk 'NR>1{print $1}' | sort -n | peco)
+source ~/.bashrc
