@@ -1,0 +1,39 @@
+#bin/bash
+
+if ! type kubectl > /dev/null 2>&1; then
+    echo "kubectl command not found"
+    exit 1
+fi
+
+kubectl config use-context $(kubectl config get-contexts -o=name | sort -n | peco)
+source ~/.bashrc
+
+# When switching projects by input method.
+#current_context() {
+#  kubectl config view -o=jsonpath='{.current-context}'
+#}
+#get_contexts() {
+#  kubectl config get-contexts -o=name | sort -n
+#}
+#list_contexts() {
+#  set -u pipefail
+#  local cur
+#  cur="$(current_context)"
+#  local yellow darkbg normal
+#  yellow=$(tput setaf 3 || true)
+#  darkbg=$(tput setab 0 || true)
+#  normal=$(tput sgr0 || true)
+#  local cur_ctx_fg cur_ctx_bg
+#  cur_ctx_fg=${KUBECTX_CURRENT_FGCOLOR:-$yellow}
+#  cur_ctx_bg=${KUBECTX_CURRENT_BGCOLOR:-$darkbg}
+#  for c in $(get_contexts); do
+#  if [[ -t 1 && -z "${NO_COLOR:-}" && "${c}" = "${cur}" ]]; then
+#    echo "${cur_ctx_bg}${cur_ctx_fg}${c}${normal}"
+#  else
+#    echo "${c}"
+#  fi
+#  done
+#}
+#list_contexts
+#read -p "cluster name : " clustername
+#kubectl config use-context $clustername

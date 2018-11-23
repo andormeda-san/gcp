@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if ! type kubectl >/dev/null 2>&1; then
+    echo "kubectl command not found"
+    exit 1
+fi
+
+if ! context="$(kubectl config current-context 2>/dev/null)"; then
+    echo "No context"
+    exit 0
+fi
+
+namespace="$(kubectl config view -o "jsonpath={.contexts[?(@.name==\"$context\")].context.namespace}")"
+if [[ -z "$namespace" ]]; then
+    namespace="default"
+fi
+
+echo "${context}/${namespace}"
